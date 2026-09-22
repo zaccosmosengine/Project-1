@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOIR STUDIO — Creative Studio & Visual Architecture</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Inter (Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'noir-black': '#0A0A0A',
+                        'noir-cream': '#F2F0EB',
+                        'noir-muted': '#B8B5AE',
+                        'noir-card': '#242422',
+                        'noir-gold': '#C8A96B',
+                        'noir-gold-hover': '#DFB978',
+                    },
+                    fontFamily: {
+                        editorial: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base typography & rendering settings */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #F2F0EB;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* SVG Grain Texture Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.038;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Smooth editorial hover scaling */
+        .zoom-img {
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .zoom-container:hover .zoom-img {
+            transform: scale(1.05);
+        }
+
+        /* Floating service preview image tracking */
+        #service-floating-preview, #team-floating-preview {
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.1s ease-out;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Custom minimal scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #242422;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C8A96B;
+        }
+
+        .gold-line {
+            height: 1px;
+            background: linear-gradient(90deg, rgba(200, 169, 107, 0.4) 0%, rgba(200, 169, 107, 0) 100%);
+        }
+    </style>
+</head>
+<body class="selection:bg-noir-gold selection:text-black relative">
+
+    <!-- GLOBAL SVG GRAIN OVERLAY -->
+    <div class="grain-overlay"></div>
+
+    <!-- NAVIGATION BAR -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-noir-black/80 backdrop-blur-md border-b border-white/5 transition-all">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <span class="font-editorial text-2xl font-bold tracking-widest text-noir-cream group-hover:text-noir-gold transition-colors">NOIR STUDIO</span>
+                <span class="text-[9px] font-mono tracking-widest text-noir-gold border border-noir-gold/30 px-2 py-0.5 rounded-full uppercase">Z.C.E #01</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-10 text-xs tracking-widest uppercase font-medium text-noir-muted">
+                <a href="#work" class="hover:text-noir-cream transition-colors">Work</a>
+                <a href="#services" class="hover:text-noir-cream transition-colors">Services</a>
+                <a href="#about" class="hover:text-noir-cream transition-colors">About</a>
+                <a href="#team" class="hover:text-noir-cream transition-colors">People</a>
+            </nav>
+
+            <div>
+                <button onclick="openInquiryModal()" class="text-xs tracking-widest uppercase text-noir-cream hover:text-noir-gold flex items-center space-x-2 transition-colors">
+                    <span class="w-1.5 h-1.5 rounded-full bg-noir-gold"></span>
+                    <span>Start Project</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 01 — HERO SECTION (DARK #0A0A0A) -->
+    <section class="relative h-screen w-full flex flex-col justify-between pt-24 pb-12 px-6 lg:px-12 bg-noir-black overflow-hidden">
+        <!-- Full-screen background image with dark overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=2000&q=80" alt="Noir Studio Editorial Hero" class="w-full h-full object-cover object-center filter grayscale contrast-125 opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-t from-noir-black via-noir-black/60 to-noir-black/40"></div>
+        </div>
+
+        <!-- Spacer for top flex alignment -->
+        <div></div>
+
+        <!-- Center Editorial Typography -->
+        <div class="relative z-10 max-w-5xl mx-auto text-center space-y-6">
+            <span class="text-xs font-mono tracking-widest text-noir-gold uppercase block">HIGH-END PHOTOGRAPHY & VISUAL ARCHITECTURE</span>
+            <h1 class="font-editorial text-5xl sm:text-7xl lg:text-8xl font-light tracking-tight text-noir-cream leading-[1.05]">
+                WE CREATE IMAGES <br>
+                <span class="italic font-normal text-noir-gold">THAT STAY WITH YOU.</span>
+            </h1>
+        </div>
+
+        <!-- Hero Sub-bar -->
+        <div class="relative z-10 max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-noir-muted pt-8 border-t border-white/10">
+            <div>
+                <span class="text-noir-gold">01 //</span> PHOTOGRAPHY / BRANDING / ART DIRECTION
+            </div>
+            <div class="flex items-center space-x-2 animate-bounce">
+                <span>SCROLL TO EXPLORE</span>
+                <i data-lucide="arrow-down" class="w-3.5 h-3.5 text-noir-gold"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- 02 — INTRO SECTION (OFF-WHITE #F2F0EB) -->
+    <section id="about" class="py-28 px-6 lg:px-12 bg-noir-cream text-noir-black border-b border-black/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-8 space-y-8">
+                <div class="flex items-center space-x-3 text-xs font-mono text-black/60 tracking-widest uppercase">
+                    <span class="w-2 h-2 rounded-full bg-noir-gold"></span>
+                    <span>NOIR STUDIO — EST. 2026</span>
+                </div>
+
+                <h2 class="font-editorial text-4xl sm:text-6xl lg:text-7xl font-light leading-[1.1] text-noir-black">
+                    We build visual identities, campaigns and imagery for brands that want to be <span class="italic font-serif">remembered.</span>
+                </h2>
+
+                <p class="text-black/70 text-sm sm:text-base max-w-2xl font-light leading-relaxed">
+                    Operating at the intersection of haute couture editorial direction and modern digital experience design. Built under the engineering precision of ZAC.COSMOS.ENGINE, Noir Studio crafts visual assets with permanent cultural resonance.
+                </p>
+            </div>
+
+            <!-- Asymmetric Editorial Photographic Frame -->
+            <div class="lg:col-span-4 flex justify-end">
+                <div class="w-full max-w-xs h-96 rounded-none overflow-hidden relative shadow-2xl border border-black/10">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Editorial Framing" class="w-full h-full object-cover filter grayscale contrast-125">
+                    <div class="absolute bottom-4 left-4 right-4 bg-noir-black/90 p-3 text-noir-cream text-[10px] font-mono tracking-widest uppercase flex justify-between">
+                        <span>PORTRAIT // 01</span>
+                        <span class="text-noir-gold">CREATIVE DIR.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 03 — SELECTED WORK (DARK #0A0A0A) -->
+    <section id="work" class="py-32 px-6 lg:px-12 bg-noir-black text-noir-cream border-b border-white/5">
+        <div class="max-w-7xl mx-auto space-y-24">
+            
+            <!-- Section Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs font-mono text-noir-gold tracking-widest uppercase block mb-1">CURATED ARCHIVE</span>
+                    <h2 class="font-editorial text-4xl sm:text-5xl font-light text-noir-cream">SELECTED WORK</h2>
+                </div>
+                <span class="text-xs font-mono text-noir-muted mt-2 sm:mt-0">01 — 04 SHOWCASE</span>
+            </div>
+
+            <!-- Project 01 — Image Left -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center group">
+                <div class="lg:col-span-7 zoom-container overflow-hidden relative cursor-pointer" onclick="openCaseStudy('VANTA CAMPAIGN', 'Fashion Editorial & Paris Visual Direction', 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=80" alt="Vanta Campaign" class="zoom-img w-full h-[450px] object-cover filter grayscale contrast-125">
+                </div>
+                <div class="lg:col-span-5 space-y-4 lg:pl-6">
+                    <span class="text-xs font-mono text-noir-gold tracking-widest block">01 / CAMPAIGN</span>
+                    <h3 class="font-editorial text-3xl sm:text-4xl font-light text-noir-cream">VANTA // HAUTE COUTURE</h3>
+                    <p class="text-noir-muted text-xs leading-relaxed font-light">Art direction and editorial photography for the AW26 campaign in Paris. Focus on silhouette and stark monochrome contrast.</p>
+                    <div class="pt-2">
+                        <button onclick="openCaseStudy('VANTA CAMPAIGN', 'Fashion Editorial & Paris Visual Direction', 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=80')" class="text-xs font-mono text-noir-gold hover:underline tracking-widest uppercase flex items-center space-x-2">
+                            <span>EXPLORE CASE STUDY</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 02 — Image Right (Offset) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center group">
+                <div class="lg:col-span-5 space-y-4 lg:pr-6 order-2 lg:order-1">
+                    <span class="text-xs font-mono text-noir-gold tracking-widest block">02 / ARCHITECTURAL</span>
+                    <h3 class="font-editorial text-3xl sm:text-4xl font-light text-noir-cream">THE MONOLITH HOUSE</h3>
+                    <p class="text-noir-muted text-xs leading-relaxed font-light">Spatial imagery and structural video monograph for Zurich-based minimalist concrete architecture studio.</p>
+                    <div class="pt-2">
+                        <button onclick="openCaseStudy('THE MONOLITH HOUSE', 'Spatial Imagery & Architectural Monograph', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80')" class="text-xs font-mono text-noir-gold hover:underline tracking-widest uppercase flex items-center space-x-2">
+                            <span>EXPLORE CASE STUDY</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:col-span-7 zoom-container overflow-hidden relative cursor-pointer order-1 lg:order-2" onclick="openCaseStudy('THE MONOLITH HOUSE', 'Spatial Imagery & Architectural Monograph', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="Monolith Architecture" class="zoom-img w-full h-[450px] object-cover filter grayscale contrast-125">
+                </div>
+            </div>
+
+            <!-- Project 03 — Image Left -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center group">
+                <div class="lg:col-span-7 zoom-container overflow-hidden relative cursor-pointer" onclick="openCaseStudy('SILENT HORIZONS', 'Cinematic Cover Story & Print Monograph', 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80" alt="Silent Horizons" class="zoom-img w-full h-[450px] object-cover filter grayscale contrast-120">
+                </div>
+                <div class="lg:col-span-5 space-y-4 lg:pl-6">
+                    <span class="text-xs font-mono text-noir-gold tracking-widest block">03 / EDITORIAL</span>
+                    <h3 class="font-editorial text-3xl sm:text-4xl font-light text-noir-cream">SILENT HORIZONS</h3>
+                    <p class="text-noir-muted text-xs leading-relaxed font-light">International publication series capturing landscape minimalism, high-key shadows, and editorial layout.</p>
+                    <div class="pt-2">
+                        <button onclick="openCaseStudy('SILENT HORIZONS', 'Cinematic Cover Story & Print Monograph', 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80')" class="text-xs font-mono text-noir-gold hover:underline tracking-widest uppercase flex items-center space-x-2">
+                            <span>EXPLORE CASE STUDY</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 04 — FEATURE PROJECT (DARK #0A0A0A) -->
+    <section class="relative w-full h-[80vh] min-h-[500px] overflow-hidden zoom-container cursor-pointer group" onclick="openCaseStudy('VALKYRIE TIMEPIECES', 'Geneva Luxury Identity & Brand Monograph', 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=2000&q=80')">
+        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=2000&q=80" alt="Massive Feature Project" class="zoom-img w-full h-full object-cover filter grayscale contrast-130 opacity-70">
+        <div class="absolute inset-0 bg-gradient-to-t from-noir-black via-noir-black/30 to-transparent"></div>
+
+        <div class="absolute bottom-12 left-6 lg:left-12 right-6 lg:right-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div class="space-y-2">
+                <span class="text-xs font-mono text-noir-gold tracking-widest uppercase block">FEATURED CAMPAIGN // 2026</span>
+                <h2 class="font-editorial text-4xl sm:text-6xl font-light text-noir-cream">VALKYRIE — FW / 26</h2>
+                <p class="text-noir-muted text-xs font-mono">GENEVA LUXURY TIMEPIECE IDENTITY & VISUAL SYSTEM</p>
+            </div>
+
+            <div class="inline-flex items-center space-x-3 bg-noir-black/80 border border-white/10 px-6 py-3 rounded-full group-hover:border-noir-gold transition-colors">
+                <span class="text-xs font-mono text-noir-cream tracking-widest uppercase">VIEW CASE STUDY</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 text-noir-gold group-hover:translate-x-1 transition-transform"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- 05 — SERVICES (OFF-WHITE #F2F0EB) -->
+    <section id="services" class="py-28 px-6 lg:px-12 bg-noir-cream text-noir-black relative">
+        <div class="max-w-7xl mx-auto space-y-16">
+            
+            <div class="space-y-2">
+                <span class="text-xs font-mono text-black/60 tracking-widest uppercase block">CAPABILITIES</span>
+                <h2 class="font-editorial text-4xl sm:text-5xl font-light">WHAT WE DO</h2>
+            </div>
+
+            <!-- Service List Rows -->
+            <div class="divide-y divide-black/10 border-t border-b border-black/10">
+                
+                <!-- Row 1 -->
+                <div class="service-row py-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group cursor-pointer transition-colors hover:pl-4"
+                     onmouseenter="showServicePreview('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80')"
+                     onmouseleave="hideServicePreview()">
+                    <div class="flex items-center space-x-6">
+                        <span class="text-xs font-mono text-noir-gold">01</span>
+                        <h3 class="font-editorial text-2xl sm:text-4xl font-light">PHOTOGRAPHY</h3>
+                    </div>
+                    <span class="text-xs font-mono text-black/60 uppercase tracking-widest">Campaigns / Editorial / Portrait</span>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="service-row py-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group cursor-pointer transition-colors hover:pl-4"
+                     onmouseenter="showServicePreview('https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80')"
+                     onmouseleave="hideServicePreview()">
+                    <div class="flex items-center space-x-6">
+                        <span class="text-xs font-mono text-noir-gold">02</span>
+                        <h3 class="font-editorial text-2xl sm:text-4xl font-light">BRAND IDENTITY</h3>
+                    </div>
+                    <span class="text-xs font-mono text-black/60 uppercase tracking-widest">Strategy / Visual Systems / Direction</span>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="service-row py-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group cursor-pointer transition-colors hover:pl-4"
+                     onmouseenter="showServicePreview('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=600&q=80')"
+                     onmouseleave="hideServicePreview()">
+                    <div class="flex items-center space-x-6">
+                        <span class="text-xs font-mono text-noir-gold">03</span>
+                        <h3 class="font-editorial text-2xl sm:text-4xl font-light">ART DIRECTION</h3>
+                    </div>
+                    <span class="text-xs font-mono text-black/60 uppercase tracking-widest">Campaigns / Concepts / Production</span>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="service-row py-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group cursor-pointer transition-colors hover:pl-4"
+                     onmouseenter="showServicePreview('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80')"
+                     onmouseleave="hideServicePreview()">
+                    <div class="flex items-center space-x-6">
+                        <span class="text-xs font-mono text-noir-gold">04</span>
+                        <h3 class="font-editorial text-2xl sm:text-4xl font-light">DIGITAL</h3>
+                    </div>
+                    <span class="text-xs font-mono text-black/60 uppercase tracking-widest">Websites / Experiences / Content</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Floating Service Hover Preview Element -->
+        <div id="service-floating-preview" class="fixed top-0 left-0 w-64 h-80 rounded-lg overflow-hidden shadow-2xl border border-white/20 opacity-0 z-40 hidden pointer-events-none">
+            <img id="service-preview-img" src="" alt="Service Preview" class="w-full h-full object-cover filter grayscale contrast-125">
+        </div>
+    </section>
+
+    <!-- 06 — ABOUT (DARK #0A0A0A) -->
+    <section class="py-32 px-6 lg:px-12 bg-noir-black text-noir-cream border-b border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Column: Portrait Photograph -->
+            <div class="lg:col-span-6 h-[500px] overflow-hidden rounded-none border border-white/10 relative">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1000&q=80" alt="About Noir Studio" class="w-full h-full object-cover filter grayscale contrast-125">
+                <div class="absolute bottom-4 left-4 text-[10px] font-mono text-noir-gold uppercase tracking-widest bg-noir-black/80 px-3 py-1">
+                    STUDIO PRACTICE // NOIR
+                </div>
+            </div>
+
+            <!-- Right Column: Confident Editorial Story -->
+            <div class="lg:col-span-6 space-y-8">
+                <span class="text-xs font-mono text-noir-gold tracking-widest uppercase block">ABOUT NOIR</span>
+                <h2 class="font-editorial text-4xl sm:text-5xl font-light leading-snug">
+                    We work across photography, branding and digital experiences.
+                </h2>
+                <p class="text-noir-muted text-sm font-light leading-relaxed">
+                    Noir Studio rejects temporary internet trends. We engineer imagery and web architectures that possess depth, balance, and quiet authority. Each project is crafted with bespoke visual systems designed to elevate market perception.
+                </p>
+                <div class="gold-line w-full"></div>
+                <div class="grid grid-cols-2 gap-4 text-xs font-mono text-noir-muted">
+                    <div>
+                        <span class="text-noir-cream font-bold block text-sm font-editorial">LAGOS / LONDON</span>
+                        <span>Global Studio Operations</span>
+                    </div>
+                    <div>
+                        <span class="text-noir-cream font-bold block text-sm font-editorial">ENGINEERED BY Z.C.E</span>
+                        <span>Bespoke Web Platform</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 07 — TEAM (OFF-WHITE #F2F0EB) -->
+    <section id="team" class="py-28 px-6 lg:px-12 bg-noir-cream text-noir-black border-b border-black/10 relative">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <div class="lg:col-span-7 space-y-12">
+                <div class="space-y-2">
+                    <span class="text-xs font-mono text-black/60 tracking-widest uppercase block">THE PEOPLE</span>
+                    <h2 class="font-editorial text-4xl sm:text-5xl font-light">CREATIVE LEADERSHIP</h2>
+                </div>
+
+                <!-- Editorial People List -->
+                <div class="space-y-8">
+                    
+                    <!-- Person 1 -->
+                    <div class="team-member-row border-b border-black/10 pb-6 group cursor-pointer"
+                         onmouseenter="updateTeamPortrait('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80', 'AMARA OKAFOR')"
+                         onmouseleave="resetTeamPortrait()">
+                        <div class="flex justify-between items-baseline">
+                            <h3 class="font-editorial text-3xl sm:text-4xl font-light group-hover:text-noir-gold transition-colors">AMARA OKAFOR</h3>
+                            <span class="text-xs font-mono text-black/60 uppercase">Creative Director</span>
+                        </div>
+                    </div>
+
+                    <!-- Person 2 -->
+                    <div class="team-member-row border-b border-black/10 pb-6 group cursor-pointer"
+                         onmouseenter="updateTeamPortrait('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80', 'JAY MORRIS')"
+                         onmouseleave="resetTeamPortrait()">
+                        <div class="flex justify-between items-baseline">
+                            <h3 class="font-editorial text-3xl sm:text-4xl font-light group-hover:text-noir-gold transition-colors">JAY MORRIS</h3>
+                            <span class="text-xs font-mono text-black/60 uppercase">Lead Photographer</span>
+                        </div>
+                    </div>
+
+                    <!-- Person 3 -->
+                    <div class="team-member-row border-b border-black/10 pb-6 group cursor-pointer"
+                         onmouseenter="updateTeamPortrait('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80', 'MAYA REED')"
+                         onmouseleave="resetTeamPortrait()">
+                        <div class="flex justify-between items-baseline">
+                            <h3 class="font-editorial text-3xl sm:text-4xl font-light group-hover:text-noir-gold transition-colors">MAYA REED</h3>
+                            <span class="text-xs font-mono text-black/60 uppercase">Art Director</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Pinned Portrait Frame that Updates on Hover -->
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="w-full max-w-sm h-96 rounded-none overflow-hidden relative shadow-2xl border border-black/10 bg-black/5">
+                    <img id="team-portrait-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Team Portrait" class="w-full h-full object-cover filter grayscale contrast-125 transition-all duration-500">
+                    <div class="absolute bottom-4 left-4 bg-noir-black text-noir-cream px-3 py-1 text-[10px] font-mono tracking-widest uppercase">
+                        <span id="team-portrait-name">AMARA OKAFOR</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 08 — FINAL CTA (DARK #0A0A0A) -->
+    <section class="py-36 px-6 lg:px-12 bg-noir-black text-noir-cream text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto space-y-10 relative z-10">
+            <span class="text-xs font-mono text-noir-gold tracking-widest uppercase block">START A CONVERSATION</span>
+            
+            <h2 class="font-editorial text-5xl sm:text-7xl lg:text-8xl font-light leading-none">
+                HAVE A PROJECT <br>
+                <span class="italic font-normal text-noir-gold">IN MIND?</span>
+            </h2>
+
+            <div class="pt-6">
+                <button onclick="openInquiryModal()" class="inline-flex items-center space-x-3 px-10 py-5 rounded-full bg-noir-cream text-noir-black hover:bg-noir-gold font-mono text-xs tracking-widest uppercase font-semibold transition-all shadow-2xl hover:scale-105">
+                    <span>START A CONVERSATION</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 — FOOTER (DARK #0A0A0A) -->
+    <footer class="py-16 px-6 lg:px-12 bg-noir-black border-t border-white/10 text-xs font-mono text-noir-muted">
+        <div class="max-w-7xl mx-auto space-y-12">
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Col 1 -->
+                <div class="space-y-2">
+                    <span class="font-editorial text-2xl font-bold text-noir-cream block tracking-widest">NOIR STUDIO</span>
+                    <span class="text-[10px] text-noir-gold block">BUILT BY Z.C.E // PROJECT #01</span>
+                </div>
+
+                <!-- Col 2: Socials -->
+                <div class="space-y-2">
+                    <span class="text-noir-cream block uppercase font-bold text-[11px]">CONNECT</span>
+                    <div class="flex flex-col space-y-1 text-noir-muted">
+                        <a href="https://www.instagram.com/zac.cosmos.engine/" target="_blank" class="hover:text-noir-gold transition-colors flex items-center space-x-1">
+                            <i data-lucide="instagram" class="w-3 h-3 text-noir-gold"></i>
+                            <span>Instagram (@zac.cosmos.engine)</span>
+                        </a>
+                        <a href="#" class="hover:text-noir-gold transition-colors">Behance</a>
+                        <a href="#" class="hover:text-noir-gold transition-colors">LinkedIn</a>
+                    </div>
+                </div>
+
+                <!-- Col 3: Cities -->
+                <div class="space-y-2">
+                    <span class="text-noir-cream block uppercase font-bold text-[11px]">LOCATIONS</span>
+                    <p class="text-noir-muted leading-relaxed">
+                        Lagos / London / New York
+                    </p>
+                </div>
+
+                <!-- Col 4: Direct Email -->
+                <div class="space-y-2">
+                    <span class="text-noir-cream block uppercase font-bold text-[11px]">INQUIRIES</span>
+                    <p class="text-noir-muted">
+                        hello@zac-cosmos.engine
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-gray-500">
+                <div>
+                    © 2026 NOIR STUDIO. ALL RIGHTS RESERVED.
+                </div>
+                <div class="text-noir-gold">
+                    NO PUBLIC PRICING // INDIVIDUAL PROJECT SCOPE QUOTES
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CASE STUDY MODAL -->
+    <div id="case-study-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl hidden flex items-center justify-center p-6">
+        <div class="relative max-w-4xl w-full space-y-6 text-noir-cream max-h-[90vh] overflow-y-auto">
+            <button onclick="closeCaseStudy()" class="absolute top-0 right-0 text-noir-muted hover:text-white flex items-center space-x-1 text-xs font-mono">
+                <span>CLOSE</span>
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="pt-6 space-y-2">
+                <span id="modal-category" class="text-xs font-mono text-noir-gold uppercase tracking-widest block"></span>
+                <h3 id="modal-title" class="font-editorial text-4xl sm:text-5xl font-light"></h3>
+            </div>
+            <div class="h-96 rounded-none overflow-hidden border border-white/10">
+                <img id="modal-img" src="" alt="Case Study Image" class="w-full h-full object-cover filter grayscale contrast-125">
+            </div>
+            <p class="text-noir-muted text-xs sm:text-sm font-light leading-relaxed">
+                Full editorial case study exploration showcasing campaign art direction, typography strategy, and spatial composition built for high-end market resonance.
+            </p>
+            <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                <span class="text-xs font-mono text-noir-gold">Z.C.E EDITORIAL SHOWCASE</span>
+                <button onclick="closeCaseStudy(); openInquiryModal();" class="px-6 py-3 rounded-full bg-noir-gold text-noir-black text-xs font-mono font-bold uppercase hover:bg-noir-gold-hover transition-colors">
+                    Build Similar Project
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INQUIRY / SCOPE DISPATCHER MODAL -->
+    <div id="inquiry-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl hidden flex items-center justify-center p-6">
+        <div class="relative max-w-2xl w-full bg-noir-black border border-white/10 p-8 sm:p-12 space-y-8 text-noir-cream">
+            <button onclick="closeInquiryModal()" class="absolute top-6 right-6 text-noir-muted hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div class="space-y-2">
+                <span class="text-xs font-mono text-noir-gold uppercase tracking-widest block">PROJECT CONFIGURATOR</span>
+                <h3 class="font-editorial text-3xl sm:text-4xl font-light">START A CONVERSATION</h3>
+            </div>
+
+            <!-- Scope Selection -->
+            <div class="space-y-3">
+                <label class="block text-xs font-mono uppercase text-noir-muted">Select Primary Scope</label>
+                <div class="grid grid-cols-2 gap-3 text-xs font-mono">
+                    <button type="button" onclick="selectInquiryScope('Photography Campaign')" id="scope-photo" class="scope-choice p-3 border border-white/10 text-left hover:border-noir-gold text-noir-cream">
+                        PHOTOGRAPHY
+                    </button>
+                    <button type="button" onclick="selectInquiryScope('Brand Identity')" id="scope-brand" class="scope-choice p-3 border border-white/10 text-left hover:border-noir-gold text-noir-cream">
+                        BRAND IDENTITY
+                    </button>
+                    <button type="button" onclick="selectInquiryScope('Art Direction')" id="scope-art" class="scope-choice p-3 border border-white/10 text-left hover:border-noir-gold text-noir-cream">
+                        ART DIRECTION
+                    </button>
+                    <button type="button" onclick="selectInquiryScope('Digital Web Experience')" id="scope-web" class="scope-choice p-3 border border-noir-gold bg-noir-gold/10 text-left text-noir-cream">
+                        DIGITAL WEB EXPERIENCE
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inputs -->
+            <div class="space-y-4">
+                <input type="text" id="client-name" placeholder="Your Name" class="w-full p-3 bg-white/5 border border-white/10 text-xs font-mono text-noir-cream focus:outline-none focus:border-noir-gold">
+                <input type="text" id="client-brand" placeholder="Brand / Company" class="w-full p-3 bg-white/5 border border-white/10 text-xs font-mono text-noir-cream focus:outline-none focus:border-noir-gold">
+            </div>
+
+            <!-- Dispatch Button -->
+            <button onclick="dispatchInquiryToInstagram()" class="w-full py-4 bg-noir-gold hover:bg-noir-gold-hover text-noir-black font-mono text-xs font-bold uppercase tracking-widest transition-all">
+                SEND VIA INSTAGRAM DM
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let selectedScope = 'Digital Web Experience';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+
+            // Track mouse movement for service floating preview element
+            const previewEl = document.getElementById('service-floating-preview');
+            document.addEventListener('mousemove', (e) => {
+                if (previewEl && !previewEl.classList.contains('hidden')) {
+                    previewEl.style.left = `${e.clientX + 160}px`;
+                    previewEl.style.top = `${e.clientY}px`;
+                }
+            });
+        });
+
+        // Floating Service Preview Logic
+        function showServicePreview(imgSrc) {
+            const previewEl = document.getElementById('service-floating-preview');
+            const imgEl = document.getElementById('service-preview-img');
+            imgEl.src = imgSrc;
+            previewEl.classList.remove('hidden');
+            setTimeout(() => {
+                previewEl.style.opacity = '1';
+            }, 10);
+        }
+
+        function hideServicePreview() {
+            const previewEl = document.getElementById('service-floating-preview');
+            previewEl.style.opacity = '0';
+            setTimeout(() => {
+                previewEl.classList.add('hidden');
+            }, 300);
+        }
+
+        // Team Portrait Hover Reveal Logic
+        function updateTeamPortrait(imgSrc, name) {
+            const imgEl = document.getElementById('team-portrait-img');
+            const nameEl = document.getElementById('team-portrait-name');
+            imgEl.style.opacity = '0.3';
+            setTimeout(() => {
+                imgEl.src = imgSrc;
+                nameEl.textContent = name;
+                imgEl.style.opacity = '1';
+            }, 150);
+        }
+
+        function resetTeamPortrait() {
+            // Retains last active team member
+        }
+
+        // Case Study Modal
+        function openCaseStudy(title, category, imgSrc) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-category').textContent = category;
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('case-study-modal').classList.remove('hidden');
+        }
+
+        function closeCaseStudy() {
+            document.getElementById('case-study-modal').classList.add('hidden');
+        }
+
+        // Scope Inquiry Modal Logic
+        function openInquiryModal() {
+            document.getElementById('inquiry-modal').classList.remove('hidden');
+        }
+
+        function closeInquiryModal() {
+            document.getElementById('inquiry-modal').classList.add('hidden');
+        }
+
+        function selectInquiryScope(scope) {
+            selectedScope = scope;
+            const btns = document.querySelectorAll('.scope-choice');
+            btns.forEach(btn => {
+                btn.className = 'scope-choice p-3 border border-white/10 text-left hover:border-noir-gold text-noir-cream';
+            });
+            event.target.className = 'scope-choice p-3 border border-noir-gold bg-noir-gold/10 text-left text-noir-cream';
+        }
+
+        // Instagram Dispatcher
+        function dispatchInquiryToInstagram() {
+            const name = document.getElementById('client-name').value.trim() || 'Not specified';
+            const brand = document.getElementById('client-brand').value.trim() || 'Not specified';
+
+            const formattedMessage = `👋 Hi Z.C.E! I want to start a conversation regarding NOIR STUDIO:\n` +
+                                     `• Client Name: ${name}\n` +
+                                     `• Brand/Company: ${brand}\n` +
+                                     `• Project Scope: ${selectedScope}\n\n` +
+                                     `Let's talk about what we need!`;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(formattedMessage).then(() => {
+                    alert("Inquiry Formatted & Copied to Clipboard!\n\nRedirecting to @zac.cosmos.engine Instagram DM. Simply paste the message into the chat.");
+                    window.open("https://www.instagram.com/zac.cosmos.engine/", "_blank");
+                }).catch(() => fallbackCopy(formattedMessage));
+            } else {
+                fallbackCopy(formattedMessage);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert("Inquiry Formatted & Copied to Clipboard!\n\nRedirecting to @zac.cosmos.engine Instagram DM. Simply paste the message into the chat.");
+            } catch (err) {
+                alert("Opening Instagram... Send us a DM to start our conversation!");
+            }
+            document.body.removeChild(textarea);
+            window.open("https://www.instagram.com/zac.cosmos.engine/", "_blank");
+        }
+    </script>
+</body>
+</html>
